@@ -9,14 +9,19 @@ const S3 = new AWS.S3({
 const upload = (file, mimetype) => {
   // jpeg / png
   // subir el archivo a aws
+
+
+  //o 
+  // leer el temporal
+  // subir ese archivo a aws
   try {
     const body = fs.readFileSync(`./public/images/${file}`);
     const params = {
-      Bucket: "imagenes",
-      key: file,
-      body,
-      contentType: mimetype,
-      ACL: "public-read",
+      Bucket: "imagenes", //nombre del backet creado
+      key: file,  //file es el unico id que tenemos ene l backet
+      body, //arcchivo en si mismo
+      contentType: mimetype, //tipo y fotmato
+      ACL: "public-read", //para qu sea publico el archivo para *
     };
     S3.putObject(params, (err, response) => {
       if (err) throw err;
@@ -28,6 +33,5 @@ const upload = (file, mimetype) => {
     throw e;
   }
 
-  // leer el temporal
-  // subir ese archivo a aws
+
 };
