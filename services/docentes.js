@@ -1,51 +1,54 @@
 const { create, createImages } = require("../models/docentes");
-const { imgFile } = require("../utils/fileHandler");
-/* 
-const createDocente = async (body,files) => {
+const { imgFile, pdfFile } = require("../utils/fileHandlers");
+
+const createDocente = async (bodyObj, fileObj) => {
   try {
-    const [idDocente] = await create(body);
-    // [Promise, Promise, Promise]
-    const results = files.map(file => {
-      const uid = imgFile(files);
-      const obj = {
-        idDocente,
-        uid,
-      };
-      createImages(obj); // [10]
-    })
-    return await Promise.all(results)
-    return returnImg
-  } catch (e){
+    const [idDocente] = await create(bodyObj);
+    // console.log("El id del docente " + idDocente);
 
-  }
-}
-*/
+    const uid = imgFile(fileObj);
+    console.log("id generado es " + uid + " DE 36 CARACTERES");
 
-// while, for, do while, forEach
-const createDocente = async (body, files) => {
-  try {
-    const [idDocente] = await create(body); 
-     //espera que mientras hace el create en el models
+    const obj = {
+      idDocente,
+      uid,
+    };
 
-
-     //el map ya me devuelve la lista 
-    const results = files.map((file) => { //por cada iteracion
-      const uid = imgFile(files);
-      const obj = {
-        idDocente,
-        uid,
-      };
-
-      //primero resuelve todas las promesas y las meto en un solo obj
-              
-      //existe un promiseAll
-      const [idImagen] = createImages(obj); // [10]
-    });
-    return idImagen;  //lo que devulve es un array de imagenes
+    console.log(obj);
+    const [idImagen] = await createImages(obj); //[1] [10] va devolver elid que corersponda
+    console.log(idImagen);
+    return idImagen;
   } catch (e) {
     throw e;
   }
-  // insertar en la tabla docente_imagenes el obj
 };
 
 module.exports = { createDocente };
+
+/**
+ 
+const createLibro = async (bodyObj, fileObj) => {
+  try {
+    const [idLibro] = await create(bodyObj);
+
+    const uid = imgFile(fileObj);
+    console.log("Uid de imagen : ", uid);
+
+    const obj = {
+      idLibro,
+      uid,
+    };
+
+    const [type, extension] = fileObj.mimetype.split("/");
+    const file = `${uid}.${extension}`;
+
+    const [idImagen] = await createImages(obj);
+
+    return upload(file, fileObj.mimetype);
+  } catch (e) {
+    throw e;
+  }
+};
+
+ * 
+ */
