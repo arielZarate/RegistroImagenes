@@ -2,7 +2,7 @@ const fs = require("fs");
 const { v4: uuid } = require("uuid");
 
 //extensiones permitidas
-const allowImageExtension = ["png", "jpeg", "jpg", "gif"];
+const allowImageExtension = ["png", "jpeg", "jpg", "gif", "mp4", "pdf"];
 const allowPDFExtension = ["pdf"];
 
 /**
@@ -35,7 +35,10 @@ const saveFile = (
     fs.createReadStream(path).pipe(fs.createWriteStream(fileNameOut));
     //una vez guardado en la carpeta images borramos
     fs.unlink(path, (e) => {
-      if (e) throw "No se pudo borrar el archivo temporal ";
+      if (e) throw "No se pudo borrar el archivo temporal";
+      // else {
+      // return "Se ha borrado el archivo del temp";
+      // }
     });
     return uid;
   } catch (e) {
@@ -44,9 +47,13 @@ const saveFile = (
 };
 
 //size mimetype
-const imgFile = (file) => {
-  console.log(file);
-  return saveFile(file, allowImageExtension);
+const imgFile = (files) => {
+  try {
+    //console.log("handlers: " + file);
+    return saveFile(files, allowImageExtension);
+  } catch (e) {
+    throw e;
+  }
 };
 const pdfFile = (file) => {
   return saveFile(file, allowPDFExtension);
